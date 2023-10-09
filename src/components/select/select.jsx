@@ -11,12 +11,12 @@ const Select = ({ options, labelTitle, name, selectedValue, setSelectedValue }) 
 
         console.log(value)
 
-        setSelectedValue((prevState) => ({...prevState, [name]: value}));
+        setSelectedValue((prevState) => ({ ...prevState, [name]: value }));
     };
 
     return (
         <div className={styles.selectWrapper}>
-            <label>{labelTitle}</label>
+            <label htmlFor={name}>{labelTitle}</label>
             <select value={selectedValue} onChange={handleOnChange}>
                 {options.map((element) => (
                     <option key={uuid()} value={element.value}>

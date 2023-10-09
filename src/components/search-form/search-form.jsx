@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import Input from "../input/input";
 import Select from "../select/select";
@@ -7,8 +8,12 @@ import loupe from "../../images/loupe.png";
 import { useDispatch } from "react-redux";
 import { getBooksThunk } from "../../redux/action/books";
 
+import styles from "./search-form.module.css";
+
 const SearchForm = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
     const [searchQuery, setSearchQuery] = useState({
         input: "",
         filter: "all",
@@ -31,13 +36,16 @@ const SearchForm = () => {
     ];
 
     const handleOnSubmit = (event) => {
-        console.log("test");
         event.preventDefault();
         dispatch(getBooksThunk(searchQuery));
+
+        if (location.pathname !== "/") {
+            navigate("/")
+        }
     };
 
     return (
-        <form onSubmit={handleOnSubmit}>
+        <form onSubmit={handleOnSubmit} className={styles.form}>
             <Input
                 placeholder={"Поиск..."}
                 inputValue={searchQuery.inputQuery}
@@ -46,20 +54,22 @@ const SearchForm = () => {
                 icon={loupe}
                 iconActionType={"submit"}
             />
-            <Select
-                name={"filter"}
-                selectedValue={searchQuery.filter}
-                setSelectedValue={setSearchQuery}
-                options={filterOptions}
-                labelTitle={"Categories"}
-            />
-            <Select
-                name={"sort"}
-                selectedValue={searchQuery.sort}
-                setSelectedValue={setSearchQuery}
-                options={sortOptions}
-                labelTitle={"Sorting by"}
-            />
+            <div className={styles.selectsWrapper}>
+                <Select
+                    name={"filter"}
+                    selectedValue={searchQuery.filter}
+                    setSelectedValue={setSearchQuery}
+                    options={filterOptions}
+                    labelTitle={"Categories:"}
+                />
+                <Select
+                    name={"sort"}
+                    selectedValue={searchQuery.sort}
+                    setSelectedValue={setSearchQuery}
+                    options={sortOptions}
+                    labelTitle={"Sorting by:"}
+                />
+            </div>
         </form>
     );
 };

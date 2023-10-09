@@ -1,0 +1,12 @@
+.booksWrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.totalBooks {
+    text-align: center;
+}

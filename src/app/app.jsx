@@ -1,33 +1,32 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { Routes, Route } from "react-router-dom";
 import {
     getStateBooksError,
     getStateBooksRequest,
-    getStateBooks
+
 } from "../selectors/books-selectors";
 
 import SearchForm from "../components/search-form/search-form";
-import { getBooksThunk } from "../redux/action/books";
 import Loader from "../components/loader/loader";
 
+import BookPage from "../pages/book-page/book-page";
+import MainPage from "../pages/main-page/main-page";
+
 function App() {
-    const dispatch = useDispatch();
     const booksRequest = useSelector(getStateBooksRequest);
     const booksError = useSelector(getStateBooksError);
-    const books = useSelector(getStateBooks);
-
-    useEffect(() => {
-        dispatch(getBooksThunk());
-    }, []);
-
-    useEffect(() => {
-        console.log(books);
-    }, [books])
 
     return (
         <>
+            <h1 style={{ textAlign: "center" }}>Search for books</h1>
             {booksRequest && <Loader isLoading={booksRequest} />}
             <SearchForm />
+
+            <Routes>
+                <Route path="/" element={<MainPage />} />
+                <Route path="/book/:id" element={<BookPage />} />
+            </Routes>
         </>
     );
 }
