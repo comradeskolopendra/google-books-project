@@ -1,0 +1,7 @@
+.selectWrapper {
+    display: flex;
+}
+
+.selectWrapper select {
+    margin-left: 15px;
+}

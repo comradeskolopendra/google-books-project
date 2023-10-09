@@ -1,0 +1,27 @@
+.input {
+    width: 100%;
+    margin: 0 15px;
+    border-radius: 0;
+    max-width: 500px;
+    border: 1px solid grey;
+    padding: 5px 15px;
+}
+
+.iconButton {
+    border: none;
+    padding: 0 10px;
+    margin: 0;
+    background: transparent;
+    position: absolute;
+    right: 15px;
+    top: 5px;
+    cursor: pointer;
+}
+
+.inputWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    position: relative;
+}
