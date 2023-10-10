@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import Input from "../input/input";
 import Select from "../select/select";
@@ -9,31 +10,20 @@ import { useDispatch } from "react-redux";
 import { getBooksThunk } from "../../redux/action/books";
 
 import styles from "./search-form.module.css";
+import { getStateFilterOptions, getStateSortOptions } from "../../selectors/books-selectors";
 
-const SearchForm = () => {
+const SearchForm = ({ searchQuery, setSearchQuery }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-    const [searchQuery, setSearchQuery] = useState({
-        input: "",
-        filter: "all",
-        sort: "relevance",
-    });
+    const filterOptions = useSelector(getStateFilterOptions);
+    const sortOptions = useSelector(getStateSortOptions);
 
-    const filterOptions = [
-        { value: "all", selected: true },
-        { value: "art", selected: false },
-        { value: "biography", selected: false },
-        { value: "computers", selected: false },
-        { value: "history", selected: false },
-        { value: "medical", selected: false },
-        { value: "poetry", selected: false },
-    ];
-
-    const sortOptions = [
-        { value: "relevance", selected: true },
-        { value: "newest", selected: false },
-    ];
+    useEffect(() => {
+        if (searchQuery.input && searchQuery.sort) {
+            dispatch(getBooksThunk(searchQuery));
+        }
+    }, [searchQuery.sort])
 
     const handleOnSubmit = (event) => {
         event.preventDefault();

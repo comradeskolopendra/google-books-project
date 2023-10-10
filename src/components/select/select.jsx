@@ -9,8 +9,6 @@ const Select = ({ options, labelTitle, name, selectedValue, setSelectedValue }) 
             target: { value },
         } = event;
 
-        console.log(value)
-
         setSelectedValue((prevState) => ({ ...prevState, [name]: value }));
     };
 
@@ -19,8 +17,8 @@ const Select = ({ options, labelTitle, name, selectedValue, setSelectedValue }) 
             <label htmlFor={name}>{labelTitle}</label>
             <select value={selectedValue} onChange={handleOnChange}>
                 {options.map((element) => (
-                    <option key={uuid()} value={element.value}>
-                        {element.value}
+                    <option key={uuid()} value={element}>
+                        {element}
                     </option>
                 ))}
             </select>

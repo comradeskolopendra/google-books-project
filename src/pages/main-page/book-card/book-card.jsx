@@ -15,9 +15,9 @@ const BookCard = ({ to, information }) => {
     return (
         <Link to={to} className={styles.card}>
             <img src={image} className={styles.bookImage} />
-            <p className={styles.paragraph}>{categories ? categories[0] : ""}</p>
+            <p className={styles.paragraph}>{categories ? categories[0] : "____"}</p>
             <h3>{title}</h3>
-            <p className={styles.authors}>{authors ? authors.join(", ") : ""}</p>
+            <p className={styles.authors}>{authors ? authors.join(", ") : "____"}</p>
         </Link>
     )
 };
