@@ -1,15 +1,17 @@
+import { useDispatch } from "react-redux";
 import { v4 as uuid } from "uuid";
 
 import styles from "./select.module.css";
 
 const Select = ({ options, labelTitle, name, selectedValue, setSelectedValue }) => {
+    const dispatch = useDispatch();
 
     const handleOnChange = (event) => {
         const {
             target: { value },
         } = event;
 
-        setSelectedValue((prevState) => ({ ...prevState, [name]: value }));
+        dispatch(setSelectedValue({ name, value }));
     };
 
     return (

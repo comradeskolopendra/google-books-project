@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { getStateBooks } from "../../selectors/books-selectors";
 import BookFace from "./book-face/book-face";
 
@@ -12,6 +12,7 @@ const BookPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const books = useSelector(getStateBooks);
+
     const { authors, title, image, description, categories } = useMemo(() => {
         const book = books.find((book) => book.id === id).volumeInfo;
         return {
@@ -22,6 +23,10 @@ const BookPage = () => {
             categories: book?.categories || [],
         };
     }, [id, books]);
+
+    if (books.length === 0) {
+        return <Navigate to={"/"} replace />
+    }
 
     return (
         <section className={styles.bookPage}>
@@ -37,7 +42,7 @@ const BookPage = () => {
                 </div>
             )}
             <Button
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/", { state: {} })}
                 extraClasses={styles.goBackButton}
             >
                 Вернуться назад

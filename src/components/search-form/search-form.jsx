@@ -1,60 +1,66 @@
-import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import Input from "../input/input";
 import Select from "../select/select";
 
 import loupe from "../../images/loupe.png";
-import { useDispatch } from "react-redux";
 import { getBooksThunk } from "../../redux/action/books";
 
 import styles from "./search-form.module.css";
-import { getStateFilterOptions, getStateSortOptions } from "../../selectors/books-selectors";
+import { setSearchQuery } from "../../redux/store/books";
+import { getStateFilterOptions, getStateSearchQueryFilter, getStateSearchQueryInput, getStateSearchQuerySort, getStateSortOptions } from "../../selectors/books-selectors";
+import { useEffect } from "react";
 
-const SearchForm = ({ searchQuery, setSearchQuery }) => {
+const SearchForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
     const filterOptions = useSelector(getStateFilterOptions);
     const sortOptions = useSelector(getStateSortOptions);
 
-    useEffect(() => {
-        if (searchQuery.input && searchQuery.sort) {
-            dispatch(getBooksThunk(searchQuery));
-        }
-    }, [searchQuery.sort])
+    const sortQuery = useSelector(getStateSearchQuerySort);
+    const filterQuery = useSelector(getStateSearchQueryFilter);
+    const inputQuery = useSelector(getStateSearchQueryInput);
 
     const handleOnSubmit = (event) => {
         event.preventDefault();
-        dispatch(getBooksThunk(searchQuery));
-
-        if (location.pathname !== "/") {
-            navigate("/")
-        }
+        dispatch(getBooksThunk({ sort: sortQuery, input: inputQuery }));
     };
+
+    useEffect(() => {
+        if (inputQuery && sortQuery) {
+            dispatch(getBooksThunk({ input: inputQuery, sort: sortQuery }))
+        }
+    }, [sortQuery])
+
+    useEffect(() => {
+        if (location.pathname !== "/") {
+            navigate("/", { replace: true })
+        }
+    }, [sortQuery, filterQuery])
 
     return (
         <form onSubmit={handleOnSubmit} className={styles.form}>
             <Input
                 placeholder={"Поиск..."}
-                inputValue={searchQuery.inputQuery}
+                inputValue={inputQuery}
                 setInputValue={setSearchQuery}
-                name="input"
+                name={"input"}
                 icon={loupe}
                 iconActionType={"submit"}
             />
             <div className={styles.selectsWrapper}>
                 <Select
                     name={"filter"}
-                    selectedValue={searchQuery.filter}
+                    selectedValue={filterQuery}
                     setSelectedValue={setSearchQuery}
                     options={filterOptions}
                     labelTitle={"Categories:"}
                 />
                 <Select
                     name={"sort"}
-                    selectedValue={searchQuery.sort}
+                    selectedValue={sortQuery}
                     setSelectedValue={setSearchQuery}
                     options={sortOptions}
                     labelTitle={"Sorting by:"}

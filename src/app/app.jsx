@@ -1,10 +1,9 @@
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 import {
     getStateBooksError,
     getStateBooksRequest,
-    getStateBooks,
+    getStateBooksErrorMessage
 } from "../selectors/books-selectors";
 
 import SearchForm from "../components/search-form/search-form";
@@ -13,39 +12,28 @@ import ErrorComponent from "../components/error/error";
 
 import BookPage from "../pages/book-page/book-page";
 import MainPage from "../pages/main-page/main-page";
-import withNavigate from "../hocs/withNavigate";
 
 function App() {
     const booksRequest = useSelector(getStateBooksRequest);
     const booksError = useSelector(getStateBooksError);
-    const books = useSelector(getStateBooks);
-    const [searchQuery, setSearchQuery] = useState({
-        input: "",
-        filter: "all",
-        sort: "relevance",
-    });
-
-    const WithNavigateBookPage = withNavigate(BookPage, books.length === 0);
+    const booksErrorMessage = useSelector(getStateBooksErrorMessage)
 
     return (
         <>
-            <h1 style={{ textAlign: "center" }}>Search for books</h1>
-            <SearchForm
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-            />
+            <h1 className={"totalBooks"}>Искать книги</h1>
+            <SearchForm />
 
             {booksRequest && <Loader />}
-            {booksError && <ErrorComponent />}
+            {booksError && <ErrorComponent error={booksErrorMessage} />}
             {!booksError && !booksRequest && (
                 <Routes>
                     <Route
                         path="/"
-                        element={<MainPage searchQuery={searchQuery} />}
+                        element={<MainPage />}
                     />
                     <Route
                         path="/book/:id"
-                        element={<WithNavigateBookPage />}
+                        element={<BookPage />}
                     />
                 </Routes>
             )}

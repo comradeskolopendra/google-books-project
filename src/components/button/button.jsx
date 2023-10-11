@@ -1,6 +1,6 @@
 import styles from "./button.module.css";
 
-const Button = ({ type = "button", onClick, extraClasses = "", children = "", disabled = false }) => {
+const Button = ({ type = "button", onClick = () => { console.log("Забыли прокинуть пропс onClick на меня!") }, extraClasses = "", children = "", disabled = false }) => {
     return (
         <button
             type={type}

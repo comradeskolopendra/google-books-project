@@ -1,13 +1,11 @@
 const checkResponse = (response) => {
-    try {
-        if (response.ok) {
-            return response.json();
-        }
-    } catch (error) {
-        throw new Error(response)
+    if (response.ok) {
+        return response.json()
     }
-};
 
-const request = (url, options) => fetch(url, options).then(checkResponse);
+    return Promise.reject(`Ошибка: ${response.status}`)
+}
+
+const request = (url, options = {}) => fetch(url, options).then(checkResponse);
 
 export { request };

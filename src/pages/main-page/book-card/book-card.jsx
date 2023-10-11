@@ -6,10 +6,10 @@ import { useMemo } from "react";
 const BookCard = ({ to, information }) => {
     const { image, categories, title, authors } = useMemo(
         () => ({
-            image: information?.imageLinks?.thumbnail,
-            categories: information?.categories,
-            title: information.title,
-            authors: information?.authors,
+            image: information?.imageLinks?.thumbnail || "",
+            categories: information?.categories || [],
+            title: information?.title || "",
+            authors: information?.authors || [],
         }),
         [information]
     );
@@ -18,11 +18,11 @@ const BookCard = ({ to, information }) => {
         <Link to={to} className={styles.card}>
             <img src={image} className={styles.bookImage} />
             <p className={styles.paragraph}>
-                {categories ? categories[0] : "____"}
+                {categories.length !== 0 ? categories[0] : "____"}
             </p>
             <h3>{title}</h3>
             <p className={styles.authors}>
-                {authors ? authors.join(", ") : "____"}
+                {authors.length !== 0 ? authors.join(", ") : "____"}
             </p>
         </Link>
     );

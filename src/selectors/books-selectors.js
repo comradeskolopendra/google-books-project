@@ -6,3 +6,7 @@ export const getStateFilterOptions = (store) => store.filterOptions;
 export const getStateSortOptions = (store) => store.sortOptions;
 export const getStatePaginationStep = (store) => store.paginationStep;
 export const getStateLoadMoreBooks = (store) => store.loadMoreBooksRequest;
+export const getStateSearchQuerySort = (store) => store.searchQuery.sort;
+export const getStateSearchQueryInput = (store) => store.searchQuery.input;
+export const getStateSearchQueryFilter = (store) => store.searchQuery.filter;
+export const getStateBooksErrorMessage = (store) => store.booksErrorMessage;

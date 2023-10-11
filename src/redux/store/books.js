@@ -4,6 +4,7 @@ import { getBooksThunk, loadMoreBooksThunk } from "../action/books";
 const initialState = {
     booksRequest: false,
     booksError: false,
+    booksErrorMessage: "",
     books: [],
 
     loadMoreBooksRequest: false,
@@ -17,7 +18,7 @@ const initialState = {
         "computers",
         "history",
         "medical",
-        "poetry",
+        "fiction",
     ],
 
     sortOptions: [
@@ -25,15 +26,56 @@ const initialState = {
         "newest"
     ],
 
-    paginationStep: 30
+    paginationStep: 30,
+
+    searchQuery: {
+        input: "",
+        filter: "all",
+        sort: "relevance",
+    }
 };
 
 export const booksSlice = createSlice({
     name: "books",
     initialState,
+    reducers: {
+        setSearchQuery(state, action) {
+            const { name, value } = action.payload;
+            state = {
+                ...state,
+                searchQuery: {
+                    ...state.searchQuery,
+                    [name]: value
+                }
+            }
+
+            return state;
+        },
+
+        setErrorMessage(state, action) {
+            const { message } = action.payload;
+
+            state = {
+                ...state,
+                booksErrorMessage: message
+            }
+
+            return state;
+        },
+
+        clearErrorMessage(state, action) {
+            state = {
+                ...state,
+                booksErrorMessage: ""
+            };
+
+            return state;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getBooksThunk.rejected, (state, action) => {
+                // console.log(action.payload)
                 state = {
                     ...state,
                     books: [],
@@ -105,5 +147,7 @@ export const booksSlice = createSlice({
             })
     },
 });
+
+export const { setSearchQuery, setErrorMessage, clearErrorMessage } = booksSlice.actions
 
 export default booksSlice.reducer;

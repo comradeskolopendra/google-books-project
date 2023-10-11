@@ -20,3 +20,14 @@
 .goBackButton {
     margin-top: 15px;
 }
+
+@media screen and (max-width: 1240px) {
+    .bookWrapper {
+        flex-direction: column;
+    }
+
+    .bookPage {
+        max-width: 768px;
+        margin: 0 auto;
+    }
+}

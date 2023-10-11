@@ -1,22 +1,25 @@
+import { useDispatch } from "react-redux";
 import styles from "./input.module.css";
 
 const Input = ({
     placeholder = "",
     extraClass = "",
     icon = "",
-    inputValue,
-    setInputValue,
+    inputValue = "",
+    setInputValue = () => { console.log("инпут должен быть контролируемым!") },
     type = "text",
-    onIconClick = () => {},
+    onIconClick = () => { },
     iconActionType = "button",
     name = "",
 }) => {
+    const dispatch = useDispatch();
+
     const handleOnChange = (event) => {
         const {
             target: { value },
         } = event;
 
-        setInputValue((prevState) => ({ ...prevState, [name]: value }));
+        dispatch(setInputValue({ name, value }));
     };
 
     return (
