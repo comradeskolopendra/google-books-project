@@ -1,4 +1,4 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { getBooksThunk, loadMoreBooksThunk } from "../action/books";
 
 const initialState = {
@@ -90,7 +90,7 @@ export const booksSlice = createSlice({
                 return state;
             })
             .addCase(loadMoreBooksThunk.fulfilled, (state, action) => {
-                const { items } = action.payload;
+                const { items, totalItems } = action.payload;
 
                 state = {
                     ...state,
@@ -98,6 +98,7 @@ export const booksSlice = createSlice({
                     loadMoreBooksRequest: false,
                     booksError: false,
                     booksRequest: false,
+                    totalBooks: totalItems
                 };
 
                 return state;
