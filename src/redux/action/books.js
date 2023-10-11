@@ -16,8 +16,6 @@ const loadMoreBooksThunk = createAsyncThunk("google/loadMore", async (query, { g
 
     const data = await request(`https://www.googleapis.com/books/v1/volumes?q=intitle:${input}&orderBy=${sort}&startIndex=${startIndex}&maxResults=${paginationStep}`);
 
-    console.log(data);
-
     return data;
 })
 
