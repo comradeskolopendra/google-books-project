@@ -1,8 +1,3 @@
-const checkResponse = (response) =>
-    response.ok
-        ? response.json()
-        : response.json().then((error) => Promise.reject(error));
-
-const request = (url, options) => fetch(url, options).then(checkResponse);
+const request = (url, options = {}) => fetch(url, options).then(response => response.json());
 
 export { request };

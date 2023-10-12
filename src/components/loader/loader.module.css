@@ -6,10 +6,20 @@
     border-radius: 50%;
 }
 
+.loaderWrapper {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(50px);
+}
+
 @keyframes loader {
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }

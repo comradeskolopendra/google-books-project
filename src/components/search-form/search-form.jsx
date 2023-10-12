@@ -1,65 +1,76 @@
-import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import Input from "../input/input";
 import Select from "../select/select";
 
 import loupe from "../../images/loupe.png";
-import { useDispatch } from "react-redux";
 import { getBooksThunk } from "../../redux/action/books";
+import { clearErrorMessage } from "../../redux/store/books";
+
+import styles from "./search-form.module.css";
+import { setSearchQuery } from "../../redux/store/books";
+import { getStateErrorMessage, getStateFilterOptions, getStateSearchQueryFilter, getStateSearchQueryInput, getStateSearchQuerySort, getStateSortOptions } from "../../selectors/books-selectors";
+import { useEffect } from "react";
 
 const SearchForm = () => {
     const dispatch = useDispatch();
-    const [searchQuery, setSearchQuery] = useState({
-        input: "",
-        filter: "all",
-        sort: "relevance",
-    });
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    const filterOptions = [
-        { value: "all", selected: true },
-        { value: "art", selected: false },
-        { value: "biography", selected: false },
-        { value: "computers", selected: false },
-        { value: "history", selected: false },
-        { value: "medical", selected: false },
-        { value: "poetry", selected: false },
-    ];
-
-    const sortOptions = [
-        { value: "relevance", selected: true },
-        { value: "newest", selected: false },
-    ];
+    const filterOptions = useSelector(getStateFilterOptions);
+    const sortOptions = useSelector(getStateSortOptions);
+    const sortQuery = useSelector(getStateSearchQuerySort);
+    const filterQuery = useSelector(getStateSearchQueryFilter);
+    const inputQuery = useSelector(getStateSearchQueryInput);
+    const errorMessage = useSelector(getStateErrorMessage)
 
     const handleOnSubmit = (event) => {
-        console.log("test");
         event.preventDefault();
-        dispatch(getBooksThunk(searchQuery));
+        if (errorMessage) {
+            dispatch(clearErrorMessage())
+        }
+        dispatch(getBooksThunk({ sort: sortQuery, input: inputQuery }));
     };
 
+    useEffect(() => {
+        if (inputQuery && sortQuery) {
+            dispatch(getBooksThunk({ input: inputQuery, sort: sortQuery }))
+        }
+    }, [sortQuery])
+
+    useEffect(() => {
+        if (location.pathname !== "/") {
+            navigate("/", { replace: true })
+        }
+    }, [sortQuery, filterQuery])
+
     return (
-        <form onSubmit={handleOnSubmit}>
+        <form onSubmit={handleOnSubmit} className={styles.form}>
             <Input
                 placeholder={"Поиск..."}
-                inputValue={searchQuery.inputQuery}
+                inputValue={inputQuery}
                 setInputValue={setSearchQuery}
-                name="input"
+                name={"input"}
                 icon={loupe}
                 iconActionType={"submit"}
             />
-            <Select
-                name={"filter"}
-                selectedValue={searchQuery.filter}
-                setSelectedValue={setSearchQuery}
-                options={filterOptions}
-                labelTitle={"Categories"}
-            />
-            <Select
-                name={"sort"}
-                selectedValue={searchQuery.sort}
-                setSelectedValue={setSearchQuery}
-                options={sortOptions}
-                labelTitle={"Sorting by"}
-            />
+            <div className={styles.selectsWrapper}>
+                <Select
+                    name={"filter"}
+                    selectedValue={filterQuery}
+                    setSelectedValue={setSearchQuery}
+                    options={filterOptions}
+                    labelTitle={"Categories:"}
+                />
+                <Select
+                    name={"sort"}
+                    selectedValue={sortQuery}
+                    setSelectedValue={setSearchQuery}
+                    options={sortOptions}
+                    labelTitle={"Sorting by:"}
+                />
+            </div>
         </form>
     );
 };
