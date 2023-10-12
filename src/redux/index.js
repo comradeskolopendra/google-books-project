@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import booksSlice from './store/books';
 
 export const store = configureStore({
-    devTools: true,
+    devTools: false,
     reducer: booksSlice,
     middleware: [thunk],
 });
