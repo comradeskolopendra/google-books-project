@@ -10,7 +10,7 @@ import { clearErrorMessage } from "../../redux/store/books";
 
 import styles from "./search-form.module.css";
 import { setSearchQuery } from "../../redux/store/books";
-import { getStateFilterOptions, getStateSearchQueryFilter, getStateSearchQueryInput, getStateSearchQuerySort, getStateSortOptions } from "../../selectors/books-selectors";
+import { getStateErrorMessage, getStateFilterOptions, getStateSearchQueryFilter, getStateSearchQueryInput, getStateSearchQuerySort, getStateSortOptions } from "../../selectors/books-selectors";
 import { useEffect } from "react";
 
 const SearchForm = () => {
@@ -23,10 +23,13 @@ const SearchForm = () => {
     const sortQuery = useSelector(getStateSearchQuerySort);
     const filterQuery = useSelector(getStateSearchQueryFilter);
     const inputQuery = useSelector(getStateSearchQueryInput);
+    const errorMessage = useSelector(getStateErrorMessage)
 
     const handleOnSubmit = (event) => {
         event.preventDefault();
-        dispatch(clearErrorMessage())
+        if (errorMessage) {
+            dispatch(clearErrorMessage())
+        }
         dispatch(getBooksThunk({ sort: sortQuery, input: inputQuery }));
     };
 
