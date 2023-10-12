@@ -4,8 +4,9 @@ import { getBooksThunk, loadMoreBooksThunk } from "../action/books";
 const initialState = {
     booksRequest: false,
     booksError: false,
-    booksErrorMessage: "",
     books: [],
+
+    errorMessage: "",
 
     loadMoreBooksRequest: false,
 
@@ -57,7 +58,7 @@ export const booksSlice = createSlice({
 
             state = {
                 ...state,
-                booksErrorMessage: message
+                errorMessage: message
             }
 
             return state;
@@ -66,7 +67,7 @@ export const booksSlice = createSlice({
         clearErrorMessage(state, action) {
             state = {
                 ...state,
-                booksErrorMessage: ""
+                errorMessage: ""
             };
 
             return state;
@@ -75,7 +76,7 @@ export const booksSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(getBooksThunk.rejected, (state, action) => {
-                // console.log(action.payload)
+
                 state = {
                     ...state,
                     books: [],

@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import {
     getStateBooksError,
     getStateBooksRequest,
-    getStateBooksErrorMessage
+    getStateErrorMessage
 } from "../selectors/books-selectors";
 
 import SearchForm from "../components/search-form/search-form";
@@ -16,7 +16,7 @@ import MainPage from "../pages/main-page/main-page";
 function App() {
     const booksRequest = useSelector(getStateBooksRequest);
     const booksError = useSelector(getStateBooksError);
-    const booksErrorMessage = useSelector(getStateBooksErrorMessage)
+    const errorMessage = useSelector(getStateErrorMessage)
 
     return (
         <>
@@ -24,7 +24,7 @@ function App() {
             <SearchForm />
 
             {booksRequest && <Loader />}
-            {booksError && <ErrorComponent error={booksErrorMessage} />}
+            {booksError && <ErrorComponent error={errorMessage} />}
             {!booksError && !booksRequest && (
                 <Routes>
                     <Route

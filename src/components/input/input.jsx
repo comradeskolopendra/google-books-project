@@ -6,7 +6,7 @@ const Input = ({
     extraClass = "",
     icon = "",
     inputValue = "",
-    setInputValue = () => { console.log("инпут должен быть контролируемым!") },
+    setInputValue,
     type = "text",
     onIconClick = () => { },
     iconActionType = "button",

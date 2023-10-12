@@ -6,6 +6,7 @@ import Select from "../select/select";
 
 import loupe from "../../images/loupe.png";
 import { getBooksThunk } from "../../redux/action/books";
+import { clearErrorMessage } from "../../redux/store/books";
 
 import styles from "./search-form.module.css";
 import { setSearchQuery } from "../../redux/store/books";
@@ -16,15 +17,16 @@ const SearchForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
+
     const filterOptions = useSelector(getStateFilterOptions);
     const sortOptions = useSelector(getStateSortOptions);
-
     const sortQuery = useSelector(getStateSearchQuerySort);
     const filterQuery = useSelector(getStateSearchQueryFilter);
     const inputQuery = useSelector(getStateSearchQueryInput);
 
     const handleOnSubmit = (event) => {
         event.preventDefault();
+        dispatch(clearErrorMessage())
         dispatch(getBooksThunk({ sort: sortQuery, input: inputQuery }));
     };
 

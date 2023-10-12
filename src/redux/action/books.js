@@ -6,8 +6,11 @@ const getBooksThunk = createAsyncThunk("google/getBooks", async (query, { getSta
     const { input, sort } = query;
     const paginationStep = getState().paginationStep;
 
-    const data = await request(`https://www.googleapis.com/books123/v1/volumes?q=intitle:${input}&orderBy=${sort}&maxResults=${paginationStep}&key=${import.meta.env.VITE_APP_API_KEY}`)
-        .catch((error) => { dispatch(setErrorMessage({ message: error.message })); return Promise.reject(); });
+    const data = await request(`https://www.googleapis.com/books/v1/volumes?q=intitle:${input}&orderBy=${sort}&maxResults=${paginationStep}&key=${import.meta.env.VITE_APP_API_KEY}`)
+        .catch((error) => {
+            dispatch(setErrorMessage({ message: error.message }));
+            return Promise.reject();
+        });
 
     return data;
 });
@@ -17,8 +20,11 @@ const loadMoreBooksThunk = createAsyncThunk("google/loadMore", async (query, { g
     const startIndex = getState().books.length;
     const paginationStep = getState().paginationStep;
 
-    const data = await request(`https://www.googleapis.com/books/v1/volumes?q=intitle:${input}&orderBy=${sort}&startIndex=${startIndex}&maxResults=${paginationStep}&key=${import.meta.env.VITE_APP_API_KEY}}`)
-        .catch((error) => { dispatch(setErrorMessage({ message: error.message })); return Promise.reject(); });
+    const data = await request(`https://www.googleapis.com/books/v1/volumes?q=intitle:${input}&orderBy=${sort}&startIndex=${startIndex}&maxResults=${paginationStep}&key=${import.meta.env.VITE_APP_API_KEY}`)
+        .catch((error) => {
+            dispatch(setErrorMessage({ message: error.message }));
+            return Promise.reject();
+        });
 
     return data;
 })

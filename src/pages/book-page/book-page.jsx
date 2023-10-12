@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getStateBooks } from "../../selectors/books-selectors";
 import BookFace from "./book-face/book-face";
 
@@ -13,8 +13,15 @@ const BookPage = () => {
     const navigate = useNavigate();
     const books = useSelector(getStateBooks);
 
+    useEffect(() => {
+        if (books.length === 0) {
+            navigate("/", { replace: true })
+        }
+    }, [books])
+
     const { authors, title, image, description, categories } = useMemo(() => {
-        const book = books.find((book) => book.id === id).volumeInfo;
+        const book = books.find((book) => book.id === id)?.volumeInfo;
+
         return {
             authors: book?.authors || [],
             title: book?.title || "",
@@ -24,13 +31,9 @@ const BookPage = () => {
         };
     }, [id, books]);
 
-    if (books.length === 0) {
-        return <Navigate to={"/"} replace />
-    }
-
     return (
         <section className={styles.bookPage}>
-            {books.length !== 0 && id && (
+            {books.length !== 0 && (
                 <div className={styles.bookWrapper}>
                     <BookFace bookFront={image} />
                     <BookInfo
