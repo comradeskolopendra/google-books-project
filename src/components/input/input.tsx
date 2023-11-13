@@ -1,24 +1,38 @@
+import React, { ChangeEvent, FC, HTMLInputTypeAttribute, MouseEventHandler } from "react";
 import { useDispatch } from "react-redux";
 import styles from "./input.module.css";
 
-const Input = ({
+interface IInput {
+    placeholder: string;
+    extraClass?: string;
+    icon: string;
+    inputValue: string;
+    setInputValue: ({ name, value }: { name: string; value: string }) => void;
+    type?: HTMLInputTypeAttribute
+    onIconClick?: MouseEventHandler<HTMLButtonElement>;
+    iconActionType: "button" | "submit" | "reset" | undefined;
+    name: string;
+}
+
+const Input: FC<IInput> = ({
     placeholder = "",
     extraClass = "",
     icon = "",
     inputValue = "",
     setInputValue,
     type = "text",
-    onIconClick = () => { },
+    onIconClick,
     iconActionType = "button",
     name = "",
 }) => {
     const dispatch = useDispatch();
 
-    const handleOnChange = (event) => {
+    const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
         const {
             target: { value },
         } = event;
 
+        // @ts-ignore
         dispatch(setInputValue({ name, value }));
     };
 

@@ -1,6 +1,14 @@
+import React, { FC } from "react";
 import styles from "./book-info.module.css";
 
-const BookInfo = ({ authors, categories, title, description }) => {
+interface IBookInfo {
+    authors: string[];
+    categories: string[];
+    description: string;
+    title: string;
+}
+
+const BookInfo: FC<IBookInfo> = ({ authors, categories, title, description }) => {
     return (
         <section className={styles.infoWrapper}>
             <div className={styles.item}>

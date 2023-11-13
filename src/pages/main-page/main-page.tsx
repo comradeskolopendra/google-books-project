@@ -1,3 +1,4 @@
+import React, { FC, useMemo } from "react";
 import styles from "./main-page.module.css";
 import { useSelector } from "react-redux";
 import {
@@ -9,9 +10,8 @@ import BookCard from "./book-card/book-card";
 import BottomSide from "./bottom-side/bottom-side";
 
 import { v4 as uuid } from "uuid";
-import { useMemo } from "react";
 
-const MainPage = () => {
+const MainPage: FC = () => {
     const books = useSelector(getStateBooks);
     const totalBooks = useSelector(getStateTotalBooks);
     const filterQuery = useSelector(getStateSearchQueryFilter)

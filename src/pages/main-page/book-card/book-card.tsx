@@ -1,9 +1,13 @@
+import React, { FC, useMemo } from "react";
 import { Link } from "react-router-dom";
-
 import styles from "./book-card.module.css";
-import { useMemo } from "react";
 
-const BookCard = ({ to, information }) => {
+interface IBookCard {
+    to: string;
+    information: any;
+}
+
+const BookCard: FC<IBookCard> = ({ to, information }) => {
     const { image, categories, title, authors } = useMemo(
         () => ({
             image: information?.imageLinks?.thumbnail || "",

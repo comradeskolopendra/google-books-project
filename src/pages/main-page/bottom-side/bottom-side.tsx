@@ -1,3 +1,4 @@
+import React, { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loadMoreBooksThunk } from "../../../redux/action/books";
 
@@ -6,7 +7,12 @@ import { getStateLoadMoreBooks, getStateSearchQueryInput, getStateSearchQuerySor
 
 import styles from "./bottom-side.module.css";
 
-const BottomSide = ({ filteredBooks, filterQuery }) => {
+interface IBottomSide {
+    filteredBooks: any[];
+    filterQuery: string;
+}
+
+const BottomSide: FC<IBottomSide> = ({ filteredBooks, filterQuery }) => {
     const dispatch = useDispatch();
     const totalBooks = useSelector(getStateTotalBooks);
     const inputQuery = useSelector(getStateSearchQueryInput);
@@ -15,6 +21,7 @@ const BottomSide = ({ filteredBooks, filterQuery }) => {
 
     const handleOnLoadMore = () => {
         if (inputQuery && sortQuery) {
+            // @ts-ignore
             dispatch(loadMoreBooksThunk({ sort: sortQuery, input: inputQuery }));
         }
     };

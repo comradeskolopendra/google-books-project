@@ -1,3 +1,4 @@
+import React, { FC, FormEvent, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -10,10 +11,17 @@ import { clearErrorMessage } from "../../redux/store/books";
 
 import styles from "./search-form.module.css";
 import { setSearchQuery } from "../../redux/store/books";
-import { getStateErrorMessage, getStateFilterOptions, getStateSearchQueryFilter, getStateSearchQueryInput, getStateSearchQuerySort, getStateSortOptions } from "../../selectors/books-selectors";
-import { useEffect } from "react";
+import {
+    getStateErrorMessage,
+    getStateFilterOptions,
+    getStateSearchQueryFilter,
+    getStateSearchQueryInput,
+    getStateSearchQuerySort,
+    getStateSortOptions
+}
+    from "../../selectors/books-selectors";
 
-const SearchForm = () => {
+const SearchForm: FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
@@ -25,16 +33,23 @@ const SearchForm = () => {
     const inputQuery = useSelector(getStateSearchQueryInput);
     const errorMessage = useSelector(getStateErrorMessage)
 
-    const handleOnSubmit = (event) => {
+    const handleOnSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (errorMessage) {
+            // @ts-ignore
             dispatch(clearErrorMessage())
         }
+
+        // @ts-ignore
         dispatch(getBooksThunk({ sort: sortQuery, input: inputQuery }));
     };
 
+    console.log(loupe, typeof loupe)
+
     useEffect(() => {
         if (inputQuery && sortQuery) {
+
+            // @ts-ignore
             dispatch(getBooksThunk({ input: inputQuery, sort: sortQuery }))
         }
     }, [sortQuery])
@@ -52,7 +67,7 @@ const SearchForm = () => {
                 inputValue={inputQuery}
                 setInputValue={setSearchQuery}
                 name={"input"}
-                icon={loupe}
+                icon={(loupe as unknown as string)}
                 iconActionType={"submit"}
             />
             <div className={styles.selectsWrapper}>

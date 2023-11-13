@@ -1,9 +1,18 @@
+import React, { FC } from "react";
 import { useDispatch } from "react-redux";
 import { v4 as uuid } from "uuid";
 
 import styles from "./select.module.css";
 
-const Select = ({ options = [], labelTitle = "", name = "", selectedValue = "", setSelectedValue }) => {
+interface ISelect {
+    options: string[];
+    labelTitle: string;
+    name: string;
+    selectedValue: string;
+    setSelectedValue: ({ name, value }: { name: string; value: string }) => void;
+}
+
+const Select: FC<ISelect> = ({ options = [], labelTitle = "", name = "", selectedValue = "", setSelectedValue }) => {
     const dispatch = useDispatch();
 
     const handleOnChange = (event) => {
@@ -11,6 +20,7 @@ const Select = ({ options = [], labelTitle = "", name = "", selectedValue = "", 
             target: { value },
         } = event;
 
+        // @ts-ignore
         dispatch(setSelectedValue({ name, value }));
     };
 

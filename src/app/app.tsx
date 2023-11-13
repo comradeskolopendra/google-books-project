@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import React, { useSelector } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 import {
     getStateBooksError,
@@ -12,14 +12,15 @@ import ErrorComponent from "../components/error/error";
 
 import BookPage from "../pages/book-page/book-page";
 import MainPage from "../pages/main-page/main-page";
+import { FC } from "react";
 
-function App() {
+const App: FC = () => {
     const booksRequest = useSelector(getStateBooksRequest);
     const booksError = useSelector(getStateBooksError);
     const errorMessage = useSelector(getStateErrorMessage)
 
     return (
-        <>
+        <div>
             <h1 className={"totalBooks"}>Искать книги</h1>
             <SearchForm />
 
@@ -37,7 +38,7 @@ function App() {
                     />
                 </Routes>
             )}
-        </>
+        </div>
     );
 }
 

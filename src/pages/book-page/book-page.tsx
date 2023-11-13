@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import React, { FC, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { getStateBooks } from "../../selectors/books-selectors";
@@ -8,7 +8,7 @@ import styles from "./book-page.module.css";
 import BookInfo from "./book-info/book-info";
 import Button from "../../components/button/button";
 
-const BookPage = () => {
+const BookPage: FC = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const books = useSelector(getStateBooks);
@@ -46,7 +46,7 @@ const BookPage = () => {
             )}
             <Button
                 onClick={() => navigate("/", { state: {} })}
-                extraClasses={styles.goBackButton}
+                extraClass={styles.goBackButton}
             >
                 Вернуться назад
             </Button>
