@@ -1,6 +1,7 @@
 import React, { FC } from "react";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from '../../redux/hooks';
 import { v4 as uuid } from "uuid";
+import { AppActions } from '../../redux/types';
 
 import styles from "./select.module.css";
 
@@ -13,14 +14,13 @@ interface ISelect {
 }
 
 const Select: FC<ISelect> = ({ options = [], labelTitle = "", name = "", selectedValue = "", setSelectedValue }) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const handleOnChange = (event) => {
         const {
             target: { value },
         } = event;
 
-        // @ts-ignore
         dispatch(setSelectedValue({ name, value }));
     };
 

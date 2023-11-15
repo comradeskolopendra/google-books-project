@@ -1,7 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getBooksThunk, loadMoreBooksThunk } from "../action/books";
 
-const initialState = {
+interface IInitialState {
+    booksRequest: boolean;
+    booksError: boolean;
+    books: any[];
+    errorMessage: string;
+    loadMoreBooksRequest: boolean;
+    totalBooks: null | number;
+    filterOptions: string[];
+    sortOptions: string[];
+    paginationStep: number;
+    searchQuery: {
+        input: string;
+        filter: string;
+        sort: string;
+    }
+}
+
+const initialState: IInitialState = {
     booksRequest: false,
     booksError: false,
     books: [],
@@ -22,10 +39,7 @@ const initialState = {
         "fiction",
     ],
 
-    sortOptions: [
-        "relevance",
-        "newest"
-    ],
+    sortOptions: ["relevance", "newest"],
 
     paginationStep: 30,
 
@@ -33,7 +47,7 @@ const initialState = {
         input: "",
         filter: "all",
         sort: "relevance",
-    }
+    },
 };
 
 export const booksSlice = createSlice({
@@ -64,7 +78,7 @@ export const booksSlice = createSlice({
             return state;
         },
 
-        clearErrorMessage(state, action) {
+        clearErrorMessage(state) {
             state = {
                 ...state,
                 errorMessage: ""
@@ -75,7 +89,7 @@ export const booksSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getBooksThunk.rejected, (state, action) => {
+            .addCase(getBooksThunk.rejected, (state) => {
 
                 state = {
                     ...state,
@@ -87,7 +101,7 @@ export const booksSlice = createSlice({
 
                 return state;
             })
-            .addCase(getBooksThunk.pending, (state, action) => {
+            .addCase(getBooksThunk.pending, (state) => {
                 state = {
                     ...state,
                     books: [],
@@ -112,7 +126,7 @@ export const booksSlice = createSlice({
                 return state;
             })
 
-            .addCase(loadMoreBooksThunk.rejected, (state, action) => {
+            .addCase(loadMoreBooksThunk.rejected, (state) => {
                 state = {
                     ...state,
                     booksRequest: false,
@@ -122,7 +136,7 @@ export const booksSlice = createSlice({
 
                 return state;
             })
-            .addCase(loadMoreBooksThunk.pending, (state, action) => {
+            .addCase(loadMoreBooksThunk.pending, (state) => {
                 state = {
                     ...state,
                     booksRequest: false,
@@ -148,6 +162,9 @@ export const booksSlice = createSlice({
             })
     },
 });
+
+type TBooksActionCreators = typeof booksSlice.actions;
+export type TBookActions = ReturnType<TBooksActionCreators[keyof TBooksActionCreators]>
 
 export const { setSearchQuery, setErrorMessage, clearErrorMessage } = booksSlice.actions
 

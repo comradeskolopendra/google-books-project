@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { loadMoreBooksThunk } from "../../../redux/action/books";
 
 import Button from "../../../components/button/button";
@@ -13,15 +13,14 @@ interface IBottomSide {
 }
 
 const BottomSide: FC<IBottomSide> = ({ filteredBooks, filterQuery }) => {
-    const dispatch = useDispatch();
-    const totalBooks = useSelector(getStateTotalBooks);
-    const inputQuery = useSelector(getStateSearchQueryInput);
-    const sortQuery = useSelector(getStateSearchQuerySort);
-    const loadMoreBooks = useSelector(getStateLoadMoreBooks);
+    const dispatch = useAppDispatch();
+    const totalBooks = useAppSelector(getStateTotalBooks);
+    const inputQuery = useAppSelector(getStateSearchQueryInput);
+    const sortQuery = useAppSelector(getStateSearchQuerySort);
+    const loadMoreBooks = useAppSelector(getStateLoadMoreBooks);
 
     const handleOnLoadMore = () => {
         if (inputQuery && sortQuery) {
-            // @ts-ignore
             dispatch(loadMoreBooksThunk({ sort: sortQuery, input: inputQuery }));
         }
     };

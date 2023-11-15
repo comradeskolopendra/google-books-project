@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, HTMLInputTypeAttribute, MouseEventHandler } from "react";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from '../../redux/hooks';
 import styles from "./input.module.css";
 
 interface IInput {
@@ -25,14 +25,13 @@ const Input: FC<IInput> = ({
     iconActionType = "button",
     name = "",
 }) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
         const {
             target: { value },
         } = event;
 
-        // @ts-ignore
         dispatch(setInputValue({ name, value }));
     };
 

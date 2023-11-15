@@ -1,6 +1,6 @@
 import React, { FC, FormEvent, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 
 import Input from "../input/input";
 import Select from "../select/select";
@@ -22,34 +22,29 @@ import {
     from "../../selectors/books-selectors";
 
 const SearchForm: FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location = useLocation();
 
-    const filterOptions = useSelector(getStateFilterOptions);
-    const sortOptions = useSelector(getStateSortOptions);
-    const sortQuery = useSelector(getStateSearchQuerySort);
-    const filterQuery = useSelector(getStateSearchQueryFilter);
-    const inputQuery = useSelector(getStateSearchQueryInput);
-    const errorMessage = useSelector(getStateErrorMessage)
+    const filterOptions = useAppSelector(getStateFilterOptions);
+    const sortOptions = useAppSelector(getStateSortOptions);
+    const sortQuery = useAppSelector(getStateSearchQuerySort);
+    const filterQuery = useAppSelector(getStateSearchQueryFilter);
+    const inputQuery = useAppSelector(getStateSearchQueryInput);
+    const errorMessage = useAppSelector(getStateErrorMessage);
 
     const handleOnSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (errorMessage) {
-            // @ts-ignore
             dispatch(clearErrorMessage())
         }
 
-        // @ts-ignore
         dispatch(getBooksThunk({ sort: sortQuery, input: inputQuery }));
     };
-
-    console.log(loupe, typeof loupe)
 
     useEffect(() => {
         if (inputQuery && sortQuery) {
 
-            // @ts-ignore
             dispatch(getBooksThunk({ input: inputQuery, sort: sortQuery }))
         }
     }, [sortQuery])
